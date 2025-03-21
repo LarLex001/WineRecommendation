@@ -1,0 +1,158 @@
+﻿@model WineData
+@{
+    ViewData["Title"] = "Add New Wine";
+}
+
+<h1>Add New Wine</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Wine Data</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Type" class="control-label"></label>
+                                <select asp-for="Type" class="form-control">
+                                    <option value="Red">Red</option>
+                                    <option value="White">White</option>
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Quality" class="control-label"></label>
+                                <input asp-for="Quality" class="form-control" min="0" max="10" step="0.1" />
+                                <span asp-validation-for="Quality" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Alcohol" class="control-label"></label>
+                                <input asp-for="Alcohol" class="form-control" step="0.1" />
+                                <span asp-validation-for="Alcohol" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PH" class="control-label"></label>
+                                <input asp-for="PH" class="form-control" step="0.01" />
+                                <span asp-validation-for="PH" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FixedAcidity" class="control-label"></label>
+                                <input asp-for="FixedAcidity" class="form-control" step="0.01" />
+                                <span asp-validation-for="FixedAcidity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VolatileAcidity" class="control-label"></label>
+                                <input asp-for="VolatileAcidity" class="form-control" step="0.01" />
+                                <span asp-validation-for="VolatileAcidity" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CitricAcid" class="control-label"></label>
+                                <input asp-for="CitricAcid" class="form-control" step="0.01" />
+                                <span asp-validation-for="CitricAcid" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ResidualSugar" class="control-label"></label>
+                                <input asp-for="ResidualSugar" class="form-control" step="0.01" />
+                                <span asp-validation-for="ResidualSugar" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Chlorides" class="control-label"></label>
+                                <input asp-for="Chlorides" class="form-control" step="0.001" />
+                                <span asp-validation-for="Chlorides" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FreeSulfurDioxide" class="control-label"></label>
+                                <input asp-for="FreeSulfurDioxide" class="form-control" step="0.1" />
+                                <span asp-validation-for="FreeSulfurDioxide" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TotalSulfurDioxide" class="control-label"></label>
+                                <input asp-for="TotalSulfurDioxide" class="form-control" step="0.1" />
+                                <span asp-validation-for="TotalSulfurDioxide" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Density" class="control-label"></label>
+                                <input asp-for="Density" class="form-control" step="0.0001" />
+                                <span asp-validation-for="Density" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Sulphates" class="control-label"></label>
+                                <input asp-for="Sulphates" class="form-control" step="0.01" />
+                                <span asp-validation-for="Sulphates" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5>Information</h5>
+            </div>
+            <div class="card-body">
+                <p>Add a new wine to the database. This data will be used for training the machine learning models.</p>
+                <p>The quality rating should be between 0 and 10, with 10 being the highest quality.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

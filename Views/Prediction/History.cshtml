@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WinePredictionResult>
+@{
+    ViewData["Title"] = "Prediction History";
+}
+
+<h1>Prediction History</h1>
+
+<div class="card mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h5>Previous Wine Predictions</h5>
+    </div>
+    <div class="card-body">
+        <p>This page shows all previous wine predictions made with the system.</p>
+        <div class="text-end mb-3">
+            <a asp-action="Index" class="btn btn-primary">Make New Prediction</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Quality</th>
+                        <th>Alcohol</th>
+                        <th>pH</th>
+                        <th>Training Status</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.PredictionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <span class="badge @(item.PredictedType == "Red" ? "bg-danger" : "bg-light text-dark")">
+                                    @item.PredictedType
+                                </span>
+                            </td>
+                            <td>@item.PredictedQuality.ToString("F1")</td>
+                            <td>@item.Alcohol%</td>
+                            <td>@item.PH</td>
+                            <td>
+                                @if (item.ContributedToRetraining)
+                                {
+                                    <span class="badge bg-success">Trained</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Result" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

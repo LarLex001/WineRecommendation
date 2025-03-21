@@ -1,0 +1,129 @@
+﻿@model WinePredictionResult
+@{
+    ViewData["Title"] = "Prediction Result";
+}
+
+<h1>Wine Prediction Results</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Prediction Results</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-primary">
+                            <h4 class="alert-heading">Wine Type</h4>
+                            <h2 class="mb-0">@Model.PredictedType</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">Quality Score</h4>
+                            <h2 class="mb-0">@Model.PredictedQuality.ToString("F1")</h2>
+                            <small class="text-muted">Scale: 0-10 (higher is better)</small>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Wine Properties</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Alcohol:</th>
+                                    <td>@Model.Alcohol%</td>
+                                </tr>
+                                <tr>
+                                    <th>pH:</th>
+                                    <td>@Model.PH</td>
+                                </tr>
+                                <tr>
+                                    <th>Fixed Acidity:</th>
+                                    <td>@Model.FixedAcidity g/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Volatile Acidity:</th>
+                                    <td>@Model.VolatileAcidity g/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Citric Acid:</th>
+                                    <td>@Model.CitricAcid g/L</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Residual Sugar:</th>
+                                    <td>@Model.ResidualSugar g/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Chlorides:</th>
+                                    <td>@Model.Chlorides g/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Free Sulfur Dioxide:</th>
+                                    <td>@Model.FreeSulfurDioxide mg/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Sulfur Dioxide:</th>
+                                    <td>@Model.TotalSulfurDioxide mg/L</td>
+                                </tr>
+                                <tr>
+                                    <th>Sulphates:</th>
+                                    <td>@Model.Sulphates g/L</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5>Model Information</h5>
+            </div>
+            <div class="card-body">
+                <p>This prediction was made using our machine learning model trained on a database of wine samples.</p>
+                <p>Prediction ID: @Model.Id</p>
+                <p>Prediction Time: @Model.PredictionDate</p>
+                <p>
+                    @if (Model.ContributedToRetraining)
+                    {
+                        <span class="badge bg-success">Used for retraining</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning">Pending for retraining</span>
+                    }
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Actions</h5>
+            </div>
+            <div class="card-body">
+                <a asp-action="Index" class="btn btn-primary btn-block mb-2">New Prediction</a>
+                <a asp-action="History" class="btn btn-secondary btn-block mb-2">View History</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark btn-block">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>

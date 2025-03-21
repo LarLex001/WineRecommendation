@@ -1,0 +1,47 @@
+﻿@model WineData
+@{
+    ViewData["Title"] = "Delete Wine";
+}
+
+<h1>Delete Wine</h1>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5>Are you sure you want to delete this wine?</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Type)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Type)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Quality)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Quality)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Alcohol)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Alcohol)%</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PH)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PH)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FixedAcidity)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FixedAcidity) g/L</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedDate)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsTrainingData)</dt>
+            <dd class="col-sm-9">@(Model.IsTrainingData ? "Yes" : "No")</dd>
+        </dl>
+
+        <div class="alert alert-warning">
+            <p><strong>Warning:</strong> Deleting this wine will remove it from the training data. This may affect the accuracy of the prediction model.</p>
+        </div>
+    </div>
+    <div class="card-footer">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+﻿@model WineData
+@{
+    ViewData["Title"] = "Wine Details";
+}
+
+<h1>Wine Details</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Wine Information</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Type)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Type)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Quality)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Quality)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Alcohol)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Alcohol)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PH)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PH)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FixedAcidity)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FixedAcidity)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.VolatileAcidity)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.VolatileAcidity)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CitricAcid)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CitricAcid)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ResidualSugar)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ResidualSugar)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Chlorides)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Chlorides)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FreeSulfurDioxide)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FreeSulfurDioxide)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TotalSulfurDioxide)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TotalSulfurDioxide)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Density)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Density)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Sulphates)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Sulphates)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedDate)</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

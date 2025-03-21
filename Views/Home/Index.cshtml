@@ -1,0 +1,67 @@
+﻿@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Wine Recommendation System</h1>
+    <p class="lead">Predict wine type and quality using machine learning</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Wine Database</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalWines</h5>
+                <p class="card-text">Total wines in database</p>
+                <a asp-controller="Wine" asp-action="Index" class="btn btn-light">View Database</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Predictions</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalPredictions</h5>
+                <p class="card-text">Total predictions made</p>
+                <a asp-controller="Prediction" asp-action="History" class="btn btn-light">View History</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Model Training</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.UntrainedPredictions</h5>
+                <p class="card-text">Predictions waiting for retraining</p>
+                <p class="small">Models automatically retrain after 10 new predictions</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Prediction</h5>
+            </div>
+            <div class="card-body">
+                <p>Make a new wine prediction based on chemical analysis</p>
+                <a asp-controller="Prediction" asp-action="Index" class="btn btn-primary">Start Prediction</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add New Wine Data</h5>
+            </div>
+            <div class="card-body">
+                <p>Add new wine data to the training database</p>
+                <a asp-controller="Wine" asp-action="Create" class="btn btn-primary">Add Wine</a>
+            </div>
+        </div>
+    </div>
+</div>

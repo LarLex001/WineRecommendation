@@ -1,0 +1,139 @@
+﻿@model WineInputModel
+@{
+    ViewData["Title"] = "Make Prediction";
+}
+
+<h1>Wine Prediction</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Enter Wine Chemical Properties</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Predict" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Alcohol" class="control-label"></label>
+                                <input asp-for="Alcohol" class="form-control" step="0.1" />
+                                <span asp-validation-for="Alcohol" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PH" class="control-label"></label>
+                                <input asp-for="PH" class="form-control" step="0.01" />
+                                <span asp-validation-for="PH" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FixedAcidity" class="control-label"></label>
+                                <input asp-for="FixedAcidity" class="form-control" step="0.01" />
+                                <span asp-validation-for="FixedAcidity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VolatileAcidity" class="control-label"></label>
+                                <input asp-for="VolatileAcidity" class="form-control" step="0.01" />
+                                <span asp-validation-for="VolatileAcidity" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CitricAcid" class="control-label"></label>
+                                <input asp-for="CitricAcid" class="form-control" step="0.01" />
+                                <span asp-validation-for="CitricAcid" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ResidualSugar" class="control-label"></label>
+                                <input asp-for="ResidualSugar" class="form-control" step="0.01" />
+                                <span asp-validation-for="ResidualSugar" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Chlorides" class="control-label"></label>
+                                <input asp-for="Chlorides" class="form-control" step="0.001" />
+                                <span asp-validation-for="Chlorides" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FreeSulfurDioxide" class="control-label"></label>
+                                <input asp-for="FreeSulfurDioxide" class="form-control" step="0.1" />
+                                <span asp-validation-for="FreeSulfurDioxide" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TotalSulfurDioxide" class="control-label"></label>
+                                <input asp-for="TotalSulfurDioxide" class="form-control" step="0.1" />
+                                <span asp-validation-for="TotalSulfurDioxide" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Density" class="control-label"></label>
+                                <input asp-for="Density" class="form-control" step="0.0001" />
+                                <span asp-validation-for="Density" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Sulphates" class="control-label"></label>
+                                <input asp-for="Sulphates" class="form-control" step="0.01" />
+                                <span asp-validation-for="Sulphates" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <input type="submit" value="Predict" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5>How It Works</h5>
+            </div>
+            <div class="card-body">
+                <p>Enter the chemical properties of a wine, and ML model will predict:</p>
+                <ul>
+                    <li>Wine Type (Red or White)</li>
+                    <li>Wine Quality (Scale of 0-10)</li>
+                </ul>
+                <p>After 10 new predictions, the model will automatically retrain to improve its accuracy.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
