@@ -9,7 +9,7 @@ namespace WineRecommendation.MachineLearning
         private static readonly string QualityModelPath = "MachineLearning/Models/wine_quality_model.zip";
         private static readonly MLContext MlContext = new MLContext(seed: 0);
 
-        // Classes for ML.NET predictions
+        // classes for ML.NET predictions
         private class TypePrediction
         {
             [Microsoft.ML.Data.ColumnName("PredictedLabel")]
@@ -77,7 +77,7 @@ namespace WineRecommendation.MachineLearning
         {
             if (!File.Exists(TypeModelPath))
                 throw new FileNotFoundException("Type prediction model not found. Please train the model first.");
-            
+
             var model = MlContext.Model.Load(TypeModelPath, out _);
 
             var wineData = new WineData
@@ -93,7 +93,7 @@ namespace WineRecommendation.MachineLearning
                 Sulphates = input.Sulphates,
                 FreeSulfurDioxide = input.FreeSulfurDioxide,
                 TotalSulfurDioxide = input.TotalSulfurDioxide,
-                Type = "Unknown" 
+                Type = "Unknown"
             };
 
             var predictionEngine = MlContext.Model.CreatePredictionEngine<WineData, TypePrediction>(model);
@@ -106,7 +106,7 @@ namespace WineRecommendation.MachineLearning
         {
             if (!File.Exists(QualityModelPath))
                 throw new FileNotFoundException("Quality prediction model not found. Please train the model first.");
-            
+
             var model = MlContext.Model.Load(QualityModelPath, out _);
 
             var predictionEngine = MlContext.Model.CreatePredictionEngine<WineInputModel, QualityPrediction>(model);

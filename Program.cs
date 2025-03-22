@@ -21,6 +21,8 @@ builder.Services.AddScoped<IWineService, WineService>();
 builder.Services.AddScoped<IWinePredictionService, WinePredictionService>();
 builder.Services.AddScoped<ModelTrainingService>();
 builder.Services.AddHostedService<SeedDataService>();
+builder.Services.AddSingleton<BackgroundTrainingQueue>();
+builder.Services.AddHostedService<BackgroundTrainingService>();
 
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

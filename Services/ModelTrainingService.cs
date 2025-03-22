@@ -23,7 +23,7 @@ namespace WineRecommendation.Services
         {
             if (await _dbContext.Wines.AnyAsync()) return;
             
-            var appDataPath = Path.Combine(_environment.ContentRootPath, "App_Data");
+            var appDataPath = Path.Combine(_environment.ContentRootPath, "AppData");
 
             var redWineFile = Path.Combine(appDataPath, "red_wine.csv");
             var whiteWineFile = Path.Combine(appDataPath, "white_wine.csv");
@@ -145,8 +145,10 @@ namespace WineRecommendation.Services
 
             UnifiedModelBuilder.TrainTypeModel(allTrainingData);
             UnifiedModelBuilder.TrainQualityModel(allTrainingData);
+            await EvaluateModelsAsync();
 
             Console.WriteLine($"Models retrained with {newPredictions.Count()} new data points");
+
         }
 
         public async Task EvaluateModelsAsync()
@@ -157,6 +159,20 @@ namespace WineRecommendation.Services
 
             UnifiedModelBuilder.EvaluateTypeModel(testData);
             UnifiedModelBuilder.EvaluateQualityModel(testData);
+        }
+
+        public async Task MarkPredictionsAsTrainedAsync(IEnumerable<int> predictionIds)
+        {
+            foreach (var id in predictionIds)
+            {
+                var prediction = await _dbContext.PredictionResults.FindAsync(id);
+                if (prediction != null)
+                {
+                    prediction.ContributedToRetraining = true;
+                    _dbContext.Entry(prediction).State = EntityState.Modified;
+                }
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

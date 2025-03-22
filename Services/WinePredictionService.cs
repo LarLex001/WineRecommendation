@@ -8,12 +8,17 @@ namespace WineRecommendation.Services
     public class WinePredictionService : IWinePredictionService
     {
         private readonly WineDbContext _dbContext;
-        private readonly ModelTrainingService _modelTrainingService;
+        private readonly BackgroundTrainingQueue _trainingQueue;
+        private readonly ILogger<WinePredictionService> _logger;
 
-        public WinePredictionService(WineDbContext dbContext, ModelTrainingService modelTrainingService)
+        public WinePredictionService(
+            WineDbContext dbContext,
+            BackgroundTrainingQueue trainingQueue,
+            ILogger<WinePredictionService> logger)
         {
             _dbContext = dbContext;
-            _modelTrainingService = modelTrainingService;
+            _trainingQueue = trainingQueue;
+            _logger = logger;
         }
 
         public async Task<WinePredictionResult> PredictWineAsync(WineInputModel inputModel)
@@ -43,23 +48,22 @@ namespace WineRecommendation.Services
             var untrainedCount = await GetUntrainedPredictionsCountAsync();
             if (untrainedCount >= 10)
             {
-                var untrainedPredictions = await _dbContext.PredictionResults
+                var untrainedPredictionIds = await _dbContext.PredictionResults
                     .Where(p => !p.ContributedToRetraining)
+                    .Select(p => p.Id)
                     .ToListAsync();
 
-                await _modelTrainingService.RetrainModelsWithNewDataAsync(untrainedPredictions);
-
-                var predictionIds = untrainedPredictions.Select(p => p.Id);
-                await MarkPredictionsAsTrainedAsync(predictionIds);
+                _logger.LogInformation("Queueing background model retraining with {Count} predictions", untrainedPredictionIds.Count);
+                _trainingQueue.QueueTrainingWork(new TrainingItem { PredictionIds = untrainedPredictionIds });
             }
 
             return predictionResult;
         }
 
-        public async Task<WinePredictionResult?> GetPredictionByIdAsync(int id) => 
+        public async Task<WinePredictionResult?> GetPredictionByIdAsync(int id) =>
             await _dbContext.PredictionResults.FindAsync(id);
-        
-        public async Task<List<WinePredictionResult>> GetAllPredictionsAsync() => 
+
+        public async Task<List<WinePredictionResult>> GetAllPredictionsAsync() =>
             await _dbContext.PredictionResults
                             .OrderByDescending(p => p.PredictionDate)
                             .ToListAsync();
@@ -70,19 +74,5 @@ namespace WineRecommendation.Services
             await _dbContext.PredictionResults
                             .Where(p => !p.ContributedToRetraining)
                             .CountAsync();
- 
-        public async Task MarkPredictionsAsTrainedAsync(IEnumerable<int> predictionIds)
-        {
-            foreach (var id in predictionIds)
-            {
-                var prediction = await _dbContext.PredictionResults.FindAsync(id);
-                if (prediction != null)
-                {
-                    prediction.ContributedToRetraining = true;
-                    _dbContext.Entry(prediction).State = EntityState.Modified;
-                }
-            }
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }

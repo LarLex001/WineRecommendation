@@ -8,7 +8,6 @@ namespace WineRecommendation.Services
         Task<List<WinePredictionResult>> GetAllPredictionsAsync();
         Task<int> GetTotalPredictionsAsync();
         Task<int> GetUntrainedPredictionsCountAsync();
-        Task MarkPredictionsAsTrainedAsync(IEnumerable<int> predictionIds);
         Task<WinePredictionResult?> GetPredictionByIdAsync(int id);
     }
 }
