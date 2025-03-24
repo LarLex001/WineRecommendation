@@ -20,6 +20,7 @@ builder.Services.AddDbContext<WineDbContext>(options =>
 builder.Services.AddScoped<IWineService, WineService>();
 builder.Services.AddScoped<IWinePredictionService, WinePredictionService>();
 builder.Services.AddScoped<ModelTrainingService>();
+builder.Services.AddScoped<DatabaseService>();
 builder.Services.AddHostedService<SeedDataService>();
 builder.Services.AddSingleton<BackgroundTrainingQueue>();
 builder.Services.AddHostedService<BackgroundTrainingService>();

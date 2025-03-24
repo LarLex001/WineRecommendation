@@ -28,65 +28,91 @@ namespace WineRecommendation.Services
             var redWineFile = Path.Combine(appDataPath, "red_wine.csv");
             var whiteWineFile = Path.Combine(appDataPath, "white_wine.csv");
 
-            if (File.Exists(redWineFile)) await ImportWineDataFromCsvAsync(redWineFile, "Red");
-            if (File.Exists(whiteWineFile)) await ImportWineDataFromCsvAsync(whiteWineFile, "White");   
+            var redWines = new List<WineData>();
+            var whiteWines = new List<WineData>();
+
+            if (File.Exists(redWineFile)) 
+                redWines = await ImportWineDataFromCsvAsync(redWineFile, "Red");
+            
+            if (File.Exists(whiteWineFile)) 
+                whiteWines = await ImportWineDataFromCsvAsync(whiteWineFile, "White");
+
+            int minCount = Math.Min(redWines.Count, whiteWines.Count);
+            if (minCount == 0) return; 
+
+            var random = new Random(42); 
+            var balancedRedWines = redWines
+                .OrderBy(x => random.Next())
+                .Take(minCount)
+                .ToList();
+            
+            var balancedWhiteWines = whiteWines
+                .OrderBy(x => random.Next())
+                .Take(minCount)
+                .ToList();
+
+            var allBalancedWines = balancedRedWines.Concat(balancedWhiteWines).ToList();
+            
+            if (allBalancedWines.Any())
+            {
+                await _dbContext.Wines.AddRangeAsync(allBalancedWines);
+                await _dbContext.SaveChangesAsync();
+                Console.WriteLine($"Imported {balancedRedWines.Count} Red wines and {balancedWhiteWines.Count} White wines (balanced)");
+            }
         }
 
-        private async Task ImportWineDataFromCsvAsync(string filePath, string wineType)
+        private async Task<List<WineData>> ImportWineDataFromCsvAsync(string filePath, string wineType)
         {
-            using var reader = new StreamReader(filePath);
-
-            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                Delimiter = ";",
-                HeaderValidated = null,
-                MissingFieldFound = null,
-                HasHeaderRecord = true
-            };
-
-            using var csv = new CsvReader(reader, csvConfig);
-            csv.Read();
-            csv.ReadHeader();
-
             var wines = new List<WineData>();
 
-            while (csv.Read())
-            {
-                try
+            await Task.Run(async () => {
+                using var reader = new StreamReader(filePath);
+
+                var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    var wine = new WineData
+                    Delimiter = ";",
+                    HeaderValidated = null,
+                    MissingFieldFound = null,
+                    HasHeaderRecord = true
+                };
+
+                using var csv = new CsvReader(reader, csvConfig);
+                await csv.ReadAsync();
+                csv.ReadHeader();
+
+                while (await csv.ReadAsync())
+                {
+                    try
                     {
-                        FixedAcidity = csv.GetField<float>("fixed acidity"),
-                        VolatileAcidity = csv.GetField<float>("volatile acidity"),
-                        CitricAcid = csv.GetField<float>("citric acid"),
-                        ResidualSugar = csv.GetField<float>("residual sugar"),
-                        Chlorides = csv.GetField<float>("chlorides"),
-                        FreeSulfurDioxide = csv.GetField<float>("free sulfur dioxide"),
-                        TotalSulfurDioxide = csv.GetField<float>("total sulfur dioxide"),
-                        Density = csv.GetField<float>("density"),
-                        PH = csv.GetField<float>("pH"),
-                        Sulphates = csv.GetField<float>("sulphates"),
-                        Alcohol = csv.GetField<float>("alcohol"),
-                        Quality = csv.GetField<float>("quality"),
-                        Type = wineType,
-                        IsTrainingData = true,
-                        CreatedDate = DateTime.Now
-                    };
+                        var wine = new WineData
+                        {
+                            FixedAcidity = csv.GetField<float>("fixed acidity"),
+                            VolatileAcidity = csv.GetField<float>("volatile acidity"),
+                            CitricAcid = csv.GetField<float>("citric acid"),
+                            ResidualSugar = csv.GetField<float>("residual sugar"),
+                            Chlorides = csv.GetField<float>("chlorides"),
+                            FreeSulfurDioxide = csv.GetField<float>("free sulfur dioxide"),
+                            TotalSulfurDioxide = csv.GetField<float>("total sulfur dioxide"),
+                            Density = csv.GetField<float>("density"),
+                            PH = csv.GetField<float>("pH"),
+                            Sulphates = csv.GetField<float>("sulphates"),
+                            Alcohol = csv.GetField<float>("alcohol"),
+                            Quality = csv.GetField<float>("quality"),
+                            Type = wineType,
+                            IsTrainingData = true,
+                            CreatedDate = DateTime.Now
+                        };
 
-                    wines.Add(wine);
+                        wines.Add(wine);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error importing wine data: {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error importing wine data: {ex.Message}");
-                }
-            }
+            });
 
-            if (wines.Any())
-            {
-                await _dbContext.Wines.AddRangeAsync(wines);
-                await _dbContext.SaveChangesAsync();
-                Console.WriteLine($"Imported {wines.Count} {wineType} wines");
-            }
+            return wines;
         }
 
         public async Task EnsureModelsCreated()
