@@ -28,7 +28,7 @@ The project is a web application for analysing and predicting wine characteristi
 
 ## 📊 Dataset used
 
-The project uses the [Wine Quality Dataset] (https://archive.ics.uci.edu/dataset/186/wine+quality) from the UCI Machine Learning Repository. The dataset contains information on Vinho Verde red and white wines from Portugal, including:
+The project uses the [Wine Quality Dataset](https://archive.ics.uci.edu/dataset/186/wine+quality) from the UCI Machine Learning Repository. The dataset contains information on Vinho Verde red and white wines from Portugal, including:
 - 1599 red wine samples
 - 4898 samples of white wine
 
